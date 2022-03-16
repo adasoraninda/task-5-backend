@@ -1,15 +1,14 @@
 package com.investree.demo.controller;
 
-import com.investree.demo.model.Transaction;
+import com.investree.demo.model.Users;
 import com.investree.demo.utils.ResponseWrapper;
-import com.investree.demo.view.TransactionService;
+import com.investree.demo.view.UsersService;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,36 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/v1/transaksi")
+@RequestMapping("/v1/users")
 @SuppressWarnings("rawtypes")
-public class TransactionController {
+public class UsersController {
 
-  private final TransactionService service;
+  private final UsersService service;
   private final ResponseWrapper wrapper;
 
   @PostMapping
   public ResponseEntity<Map> save(
-      @RequestBody Transaction transaction
+      @RequestBody Users users
   ) {
-    return wrapper.getResult(service.save(transaction));
-  }
-
-  @PutMapping
-  public ResponseEntity<Map> updateStatus(
-      @RequestBody Transaction transaction
-  ) {
-    return wrapper.getResult(service.updateStatus(transaction));
+    return wrapper.getResult(service.save(users));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<Page<Transaction>> list(
+  public ResponseEntity<Page<Users>> list(
       @RequestParam(required = false, defaultValue = "0") Integer page,
-      @RequestParam(required = false, defaultValue = "10") Integer size,
-      @RequestParam(required = false, defaultValue = "") String status
+      @RequestParam(required = false, defaultValue = "10") Integer size
   ) {
 
-    return ResponseEntity.ok(service.list(status, page, size));
+    return ResponseEntity.ok(service.list(page, size));
   }
-
 
 }

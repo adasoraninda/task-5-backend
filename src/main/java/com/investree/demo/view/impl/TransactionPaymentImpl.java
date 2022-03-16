@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,6 +45,22 @@ public class TransactionPaymentImpl implements TransactionService {
       return mapError(e);
     }
 
+  }
+
+  @Override
+  public Page<Transaction> list(String status, Integer page, Integer size) {
+    try {
+      Pageable pageable = PageRequest.of(page, size);
+
+      if (status.isEmpty()) {
+        return repository.findAll(pageable);
+      }
+
+      return repository.findAll(status, pageable);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Page.empty();
+    }
   }
 
   private Map mappingData(Transaction transaction) {
