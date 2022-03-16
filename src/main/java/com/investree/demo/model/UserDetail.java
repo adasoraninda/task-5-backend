@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.User;
 
 @Getter
 @Setter
@@ -34,6 +33,6 @@ public class UserDetail {
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "id_user", referencedColumnName = "id")
-  private User users;
+  private Users users;
 
 }
