@@ -18,19 +18,30 @@ public class TransactionPaymentImpl implements TransactionService {
 
   @Override
   public Map save(Transaction transaction) {
-    return mappingData(repository.save(transaction));
+    try {
+      return mappingData(repository.save(transaction));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return mapError(e);
+    }
   }
 
   @Override
   @SneakyThrows
   public Map updateStatus(Transaction transaction) {
-    Transaction trxFromDb = repository.findById(transaction.getId())
-        .orElseThrow(() -> new Exception("Transaksi tidak ditemukan"));
+    try {
+      Transaction trxFromDb = repository.findById(transaction.getId())
+          .orElseThrow(() -> new Exception("Transaksi tidak ditemukan"));
 
-    trxFromDb.setId(transaction.getId());
-    trxFromDb.setStatus("lunas");
+      trxFromDb.setId(transaction.getId());
+      trxFromDb.setStatus("lunas");
 
-    return mappingData(repository.save(trxFromDb));
+      return mappingData(repository.save(trxFromDb));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return mapError(e);
+    }
+
   }
 
   private Map mappingData(Transaction transaction) {
@@ -44,6 +55,12 @@ public class TransactionPaymentImpl implements TransactionService {
     mapData.put("meminjam", transaction.getUserBorrow());
 
     return mapData;
+  }
+
+  private Map mapError(Exception e) {
+    Map mapError = new HashMap();
+    mapError.put("message", e.getMessage());
+    return mapError;
   }
 
 }
