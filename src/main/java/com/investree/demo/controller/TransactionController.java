@@ -7,6 +7,7 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +26,7 @@ public class TransactionController {
   private final ResponseWrapper wrapper;
 
   @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Map> save(
       @RequestBody Transaction transaction
   ) {
@@ -32,6 +34,7 @@ public class TransactionController {
   }
 
   @PutMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Map> updateStatus(
       @RequestBody Transaction transaction
   ) {
@@ -44,9 +47,7 @@ public class TransactionController {
       @RequestParam(required = false, defaultValue = "10") Integer size,
       @RequestParam(required = false, defaultValue = "") String status
   ) {
-
     return ResponseEntity.ok(service.list(status, page, size));
   }
-
 
 }

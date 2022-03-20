@@ -3,6 +3,7 @@ package com.investree.demo.model;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,11 +38,11 @@ public class Transaction {
   @Column(name = "status", nullable = false)
   private String status;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "id_peminjam", referencedColumnName = "id")
   private Users borrowerUser;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "id_meminjam", referencedColumnName = "id")
   private Users userBorrow;
 
